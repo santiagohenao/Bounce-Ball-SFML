@@ -6,6 +6,7 @@
 using namespace std;
 
 #define box_x 500.
+#define label_space 150.
 #define box_y 300.
 #define g 9.8
 static float dt=0.0008;
@@ -29,65 +30,7 @@ double transform_y(double var)
 }
 
 
-class Ball : public sf::Drawable
-{
-    public:
-        float x,y,vx,vy,mass;
-
-        sf::CircleShape marker;
-
-        Ball( float x0, float y0, float vx0, float vy0, float mass_arg)
-        {
-            x=x0; y=y0;
-            vy=vy0; vx=vx0;
-            marker=sf::CircleShape(mass_arg);
-        }
-
-        void move(void)
-        {
-            vy+=-g*dt;
-            vy*=alpha;
-            y+=vy*dt;
-            vx*=alpha;
-            x+=vx*dt;
-        }
-        void bounce(void)
-        {
-            if(y<=yspace_i)
-            {
-                y=yspace_i;
-                vy*=-beta;
-                vx*=beta;
-            }
-            if(y>=yspace_f)
-            {
-                y=yspace_f;
-                vy*=-beta;
-            }
-            if(x<=xspace_i)
-            {
-                x=xspace_i;
-                vx*=-beta;
-            }
-            if(x>=xspace_f)
-            {
-                x=xspace_f;
-                vx*=-beta;
-            }
-        }
-        void update(void)
-        {
-            move();
-            bounce();
-            marker.setPosition( x , transform_y(y) );
-        }
-    protected:
-        void draw(sf::RenderTarget& target, sf::RenderStates state) const
-        {
-            target.draw(marker);
-        }
-}; // CLASS OUT
-
+#include "Ball.h"
 
 
 int main(int argc, char *argv[])
@@ -128,9 +71,9 @@ int main(int argc, char *argv[])
     }
     else
     {*/
-        R=10.;xi=10.;yi=50.;vxi=50.;vyi=40.;beta=0.8;alpha=1;
+        R=20.;xi=10.;yi=50.;vxi=50.;vyi=40.;beta=0.8;alpha=1;
         xspace_i=0;
-        xspace_f=box_x-2*R;
+        xspace_f=box_x-2*R-label_space;
         yspace_i=0;
         yspace_f=box_y-2*R;
     //}
