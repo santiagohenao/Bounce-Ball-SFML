@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Keyboard.hpp>
 #include <iostream>
 #include <fstream>
 #include <math.h>
@@ -71,7 +72,7 @@ int main(int argc, char *argv[])
     }
     else
     {*/
-        R=20.;xi=10.;yi=50.;vxi=50.;vyi=40.;beta=0.8;alpha=1;
+        R=100.;xi=10.;yi=50.;vxi=50.;vyi=40.;beta=1;alpha=0.9999;
         xspace_i=0;
         xspace_f=box_x-2*R-label_space;
         yspace_i=0;
@@ -84,6 +85,18 @@ int main(int argc, char *argv[])
 
 
     sf::RenderWindow window(sf::VideoMode(box_x, box_y), "Holololo");
+
+
+
+    //                                          (x and y sizes are inverted for some reason)
+    sf::RectangleShape background(sf::Vector2f(box_x-label_space, box_y));
+    sf::Color b_color(0,0,50);
+    background.setFillColor(b_color);
+
+
+
+    sf::View view(sf::FloatRect(0, 0, box_x, box_y));
+
 
 
     // run the program as long as the window is open
@@ -100,16 +113,48 @@ int main(int argc, char *argv[])
 
 
 
-        //window.setVerticalSyncEnabled(true);
+        //if (event.type == sf::Event::MouseMoved)
+        //{
+        //    cout << "new mouse x: " << event.mouseMove.x << "\t" << "new mouse y: " << event.mouseMove.y << endl;
+        //}
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+        {
+            view.move(1,0);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+        {
+            view.move(-1,0);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
+        {
+            view.move(0,-1);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
+        {
+            view.move(0,1);
+        }
+
+
+        window.setVerticalSyncEnabled(true);
         window.setFramerateLimit(60);
 
         window.clear();
 
         for(int i=0;i<250;i++)
         {
-            ball.update(); // 200 steps every time
+            ball.update(); // 250 steps every time
         }
+
+
         //cout << ball.vy << endl;
+
+
+
+        window.setView(view);
+
+        window.draw(background);
+
         window.draw(ball);
 
         window.display();
